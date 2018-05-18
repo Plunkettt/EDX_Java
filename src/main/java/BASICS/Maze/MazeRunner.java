@@ -19,8 +19,12 @@ public class MazeRunner {
 
         //intro()
 
-        moveRight(myMap);
+        //whereTo(myMap);
 
+        myMap.moveRight();
+        myMap.printMap();
+        System.out.println(myMap.canIMoveRight());
+        System.out.println(myMap.isThereAPit("R"));
         myMap.printMap();
     }
 
@@ -31,7 +35,7 @@ public class MazeRunner {
 
     }
 
-    public void whereTo (){
+    public void whereTo (Maze myMap){
         System.out.print("Where do you want to go today? \t");
         char onward = scanny.next().charAt(0);
 
@@ -40,16 +44,43 @@ public class MazeRunner {
             onward = scanny.next().charAt(0);
         }
 
-        if (onward=='U');  //todo conmtinue
+        if (onward=='U') {
+            moveUp(myMap);
+            myMap.printMap();
+            whereTo(myMap);
+        }
+        if (onward=='D') {
+            moveDown(myMap);
+            myMap.printMap();
+            whereTo(myMap);
+        }
+        if (onward=='L') {
+            moveLeft(myMap);
+            myMap.printMap();
+            whereTo(myMap);
+        }
+        if (onward=='R') {
+            moveRight(myMap);
+            myMap.printMap();
+            whereTo(myMap);
+        }
     }
 
+    //movement
 
-
-
-    public static void moveRight(Maze myMap){
-        boolean mayI = myMap.canIMoveRight();
+    public static void moveUp(Maze myMap){
+        boolean mayI = myMap.canIMoveUp();
         if (mayI==true){
-            myMap.moveRight();
+            myMap.moveUp();
+        }else {
+            System.out.println("Sorry, you cannot go through. There is a huge ass wall blocking your way.");
+        }
+    }
+
+    public static void moveDown(Maze myMap){
+        boolean mayI = myMap.canIMoveDown();
+        if (mayI==true){
+            myMap.moveDown();
         }else {
             System.out.println("Sorry, you cannot go through. There is a huge ass wall blocking your way.");
         }
@@ -62,19 +93,12 @@ public class MazeRunner {
         }else {
             System.out.println("Sorry, you cannot go through. There is a huge ass wall blocking your way.");
         }
+    }
 
-    }  public static void moveUp(Maze myMap){
-        boolean mayI = myMap.canIMoveUp();
+    public static void moveRight(Maze myMap){
+        boolean mayI = myMap.canIMoveRight();
         if (mayI==true){
-            myMap.moveUp();
-        }else {
-            System.out.println("Sorry, you cannot go through. There is a huge ass wall blocking your way.");
-        }
-
-    }  public static void moveDown(Maze myMap){
-        boolean mayI = myMap.canIMoveDown();
-        if (mayI==true){
-            myMap.moveDown();
+            myMap.moveRight();
         }else {
             System.out.println("Sorry, you cannot go through. There is a huge ass wall blocking your way.");
         }
