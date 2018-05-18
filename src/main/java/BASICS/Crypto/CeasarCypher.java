@@ -10,7 +10,7 @@ import java.util.Scanner;
 
 
 class Main {
-    Scanner scanny = new Scanner(System.in);
+    private Scanner scanny = new Scanner(System.in);
 
     Main() {
         System.out.println("Hello there. Rumour has it that you are interested in keeping something SECRET! You came to the right place.");
