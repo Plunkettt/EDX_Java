@@ -16,18 +16,11 @@ public class MazeRunner {
 
     private MazeRunner(){
 
-
         Maze myMap = new Maze();
-
         myMap.printMap();
-
         intro();
-
         whereTo(myMap);
-
-
     }
-
 
     public static void main(String[] args) {
 
