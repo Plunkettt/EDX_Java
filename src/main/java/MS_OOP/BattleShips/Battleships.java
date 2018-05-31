@@ -90,8 +90,9 @@ class ViewMethods{
                 objectMap [i][j] = map[i][j];
             }
         }
-        for (int i=0; i<objectMap.length;i++) {
-            lists.add(Arrays.asList(objectMap[i]));
+
+        for (Character [] c : objectMap){
+            lists.add(Arrays.asList(c));
         }
 
         //left and right
@@ -144,8 +145,8 @@ class ViewMethods{
             }
         }
 
-        for (int i=0; i<objectMap.length;i++) {
-            lists.add(Arrays.asList(objectMap[i]));
+        for (Character [] c : objectMap){
+            lists.add(Arrays.asList(c));
         }
 
         //left and right
@@ -278,8 +279,8 @@ class OceanMap {
 
     OceanMap() {
 
-        for (int i = 0; i < oceanMap.length; i++) {
-            Arrays.fill(oceanMap[i], ' ');
+        for (char [] c : oceanMap){
+            Arrays.fill(c, ' ');
         }
     }
 
