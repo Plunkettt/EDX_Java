@@ -1,6 +1,7 @@
 package MS_OOP.BattleShips;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Ja on 20/05/2018.
@@ -445,6 +446,12 @@ class SetUpAIShips{
             //keep in mind addShip method has x and y switched to make it cartesian! For further info check common methods.
             //'#' is the symbol of AI ships
             commonMethods.addShip(x % 10, x / 10, oceanMap, '#');
+            System.out.println("Enemy ship number "+(i+1)+ " has been deployed!");
+            try {
+                TimeUnit.SECONDS.sleep(2);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 
