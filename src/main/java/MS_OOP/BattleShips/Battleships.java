@@ -5,13 +5,12 @@ import java.util.*;
 /**
  * @author Ja on 20/05/2018.
  * @project EDX,
- * This project is one listing due to EDX requirements (You paste projects into a forum post).
+ * This project is one listing due to EDX requirements (projects are to be pasted into a forum post).
  */
 /*
 * Please keep in mind that since in a cartesian coordinates system x is horizontal and y is vertical and in a 2D array
 * i is vertical and j is horizontal. Therefore every time user is presented with coordinates they are switched.
 * */
-//todo check out if this approach makes sense, playing whole thing, what i mean if whether random turning those won't have a problem
 
 
 class Main{
@@ -20,27 +19,17 @@ class Main{
 
     Main(int numberOfPlayerShips, int numberofAIShips) {
 
-        //todo this is only needed for final, remove it as soon as full game is ready
-        ViewMethods viewMethods = new ViewMethods();
-
-        Intro intro = new Intro();
+        new Intro();
 
         OceanMapPlayer playerVisibleOceanMap = new OceanMapPlayer();
         
-        SetUpPlayerShips setUpPlayerShips = new SetUpPlayerShips(numberOfPlayerShips, playerVisibleOceanMap.getOceanMapPlayer());
+        new SetUpPlayerShips(numberOfPlayerShips, playerVisibleOceanMap.getOceanMapPlayer());
 
         OceanMapMain mainOceanMap = new OceanMapMain(playerVisibleOceanMap);
 
-        SetUpAIShips setUpAIShips = new SetUpAIShips(numberofAIShips, mainOceanMap.getOceanMapMain());
+        new SetUpAIShips(numberofAIShips, mainOceanMap.getOceanMapMain());
 
-        GameItself gameItself = new GameItself(playerVisibleOceanMap, mainOceanMap, numberOfPlayerShips, numberofAIShips);
-
-
-
-        /*System.out.println("FINAL--------------------ALDJFIOHJFWOIEJFIOPEWJFIOJIO#WEJOIEWJFIOEW:");
-        viewMethods.viewMapAsList(mainOceanMap);
-        System.out.println("\nmain\nplayer visible\n");
-        viewMethods.viewMapAsList(playerVisibleOceanMap);*/
+        new GameItself(playerVisibleOceanMap, mainOceanMap, numberOfPlayerShips, numberofAIShips);
 
     }
 }
@@ -51,23 +40,22 @@ class Main{
 
 class CommonMethods{
 
-    public CommonMethods() {
+    CommonMethods() {
     }
 
     int scannyOfInt(){
         Scanner scanny = new Scanner(System.in);
         int scanned = scanny.nextInt();
-        scanny.skip("\\s|[A-Z]|[a-z]|\\`|\\-|\\=|\\[|\\]|\\\\|\\;|\\'|\\,|\\.|\\/|\\*|\\+]");
+        scanny.skip("\\s|[A-Z]|[a-z]|\\`|\\-|\\=|\\[|\\]|\\|\\;|\\'|\\,|\\.|\\/|\\*|\\+]");
         return scanned;
     }
-    //This method switches x and y to make it cartessian. todo check if it's right, remember AI must have same transition and shots must have it too
-    char[][] addShip(int x, int y, char[][] map, char shipSymbol){
+    //This method switches x and y to make it cartessian. If you're lucky it might even add a ship ;)
+    void addShip(int x, int y, char[][] map, char shipSymbol){
         map[y][x]=shipSymbol;
-        return map;
     }
 
     //This method is used for AI
-    public char [] mapTo1D (char[][] input){
+    char [] mapTo1D (char[][] input){
 
         char [] output = new char[input.length*input[0].length];
 
@@ -86,10 +74,10 @@ class CommonMethods{
 
 class ViewMethods{
 
-    public ViewMethods() {
+    ViewMethods() {
     }
 
-    //overloaded mthod, takes map from object
+    //overloaded mthod, map from Oceanmap object
     void viewMapAsList(OceanMap oceanMap){
         char[][] map = oceanMap.getOceanMap();
 
@@ -108,7 +96,7 @@ class ViewMethods{
 
         //left and right
         for (int i=0; i<lists.size(); i++) {
-            List temp = new ArrayList(lists.get(i));
+            List<Object> temp = new ArrayList<>(lists.get(i));
             temp.add(i);
             temp.add(0, i);
             lists.set(i, temp);
@@ -121,7 +109,7 @@ class ViewMethods{
             mapLength[i]=i;
         }
 
-        List <Object> mapLengthList = new ArrayList();
+        List <Object> mapLengthList = new ArrayList<>();
 
         for (int i : mapLength){
             mapLengthList.add(i);
@@ -131,7 +119,7 @@ class ViewMethods{
         lists.add(mapLengthList);
 
         for (int i=0;i<lists.size();i+=11) {
-            List temp = new ArrayList(lists.get(i));
+            List <Object> temp = new ArrayList<>(lists.get(i));
             temp.add(" ");
             temp.add(0, " ");
             lists.set(i, temp);
@@ -143,7 +131,7 @@ class ViewMethods{
         }
     }
 
-    //overloaded method, useful in testing
+    //overloaded method,  useful in testing
     void viewMapAsList(char [][] map){
 
         List<List<Object>> lists =new ArrayList<>();
@@ -155,13 +143,14 @@ class ViewMethods{
                 objectMap [i][j] = map[i][j];
             }
         }
+
         for (int i=0; i<objectMap.length;i++) {
             lists.add(Arrays.asList(objectMap[i]));
         }
 
         //left and right
         for (int i=0; i<lists.size(); i++) {
-            List temp = new ArrayList(lists.get(i));
+            List <Object>temp = new ArrayList<>(lists.get(i));
             temp.add(i);
             temp.add(0, i);
             lists.set(i, temp);
@@ -174,7 +163,7 @@ class ViewMethods{
             mapLength[i]=i;
         }
 
-        List <Object> mapLengthList = new ArrayList();
+        List <Object> mapLengthList = new ArrayList<>();
 
         for (int i : mapLength){
             mapLengthList.add(i);
@@ -184,7 +173,7 @@ class ViewMethods{
         lists.add(mapLengthList);
 
         for (int i=0;i<lists.size();i+=11) {
-            List temp = new ArrayList(lists.get(i));
+            List <Object> temp = new ArrayList<>(lists.get(i));
             temp.add(" ");
             temp.add(0, " ");
             lists.set(i, temp);
@@ -222,8 +211,61 @@ class ViewMethods{
 
 
 class Intro{
+    //Made using:   http://patorjk.com/software/taag/
+
     Intro(){
-        System.out.println("Welcome to the Game!");
+
+        System.out.println("");
+        System.out.println("           .---.            ,--,                                ____                      ___                         ___      ,---,               ");
+        System.out.println("          /. ./|          ,--.'|                              ,'  , `.                  ,--.'|_                     ,--.'|_  ,--.' |               ");
+        System.out.println("      .--'.  ' ;          |  | :               ,---.       ,-+-,.' _ |                  |  | :,'   ,---.            |  | :,' |  |  :               ");
+        System.out.println("     /__./ \\ : |          :  : '              '   ,'\\   ,-+-. ;   , ||                  :  : ' :  '   ,'\\           :  : ' : :  :  :               ");
+        System.out.println(" .--'.  '   \\' .   ,---.  |  ' |      ,---.  /   /   | ,--.'|'   |  || ,---.          .;__,'  /  /   /   |        .;__,'  /  :  |  |,--.   ,---.   ");
+        System.out.println("/___/ \\ |    ' '  /     \\ '  | |     /     \\.   ; ,. :|   |  ,', |  |,/     \\         |  |   |  .   ; ,. :        |  |   |   |  :  '   |  /     \\  ");
+        System.out.println(";   \\  \\;      : /    /  ||  | :    /    / ''   | |: :|   | /  | |--'/    /  |        :__,'| :  '   | |: :        :__,'| :   |  |   /' : /    /  | ");
+        System.out.println(" \\   ;  `      |.    ' / |'  : |__ .    ' / '   | .; :|   : |  | ,  .    ' / |          '  : |__'   | .; :          '  : |__ '  :  | | |.    ' / | ");
+        System.out.println("  .   \\    .\\  ;'   ;   /||  | '.'|'   ; :__|   :    ||   : |  |/   '   ;   /|          |  | '.'|   :    |          |  | '.'||  |  ' | :'   ;   /| ");
+        System.out.println("   \\   \\   ' \\ |'   |  / |;  :    ;'   | '.'|\\   \\  / |   | |`-'    '   |  / |          ;  :    ;\\   \\  /           ;  :    ;|  :  :_:,''   |  / | ");
+        System.out.println("    :   '  |--\" |   :    ||  ,   / |   :    : `----'  |   ;/        |   :    |          |  ,   /  `----'            |  ,   / |  | ,'    |   :    | ");
+        System.out.println("     \\   \\ ;     \\   \\  /  ---`-'   \\   \\  /          '---'          \\   \\  /            ---`-'                      ---`-'  `--''       \\   \\  /  ");
+        System.out.println("      '---\"       `----'             `----'                           `----'                                                              `----'   ");
+        System.out.println("                                 ,----,       ,----,   ,--,                                                                                        ");
+        System.out.println("                               ,/   .`|     ,/   .`|,---.'|                                 ,--,        ,-.----.                                   ");
+        System.out.println("    ,---,.    ,---,          ,`   .'  :   ,`   .'  :|   | :       ,---,.  .--.--.         ,--.'|   ,---,\\    /  \\    .--.--.                       ");
+        System.out.println("  ,'  .'  \\  '  .' \\       ;    ;     / ;    ;     /:   : |     ,'  .' | /  /    '.    ,--,  | :,`--.' ||   :    \\  /  /    '.                     ");
+        System.out.println(",---.' .' | /  ;    '.   .'___,/    ,'.'___,/    ,' |   ' :   ,---.'   ||  :  /`. / ,---.'|  : '|   :  :|   |  .\\ :|  :  /`. /                     ");
+        System.out.println("|   |  |: |:  :       \\  |    :     | |    :     |  ;   ; '   |   |   .';  |  |--`  |   | : _' |:   |  '.   :  |: |;  |  |--`                      ");
+        System.out.println(":   :  :  /:  |   /\\   \\ ;    |.';  ; ;    |.';  ;  '   | |__ :   :  |-,|  :  ;_    :   : |.'  ||   :  ||   |   \\ :|  :  ;_                        ");
+        System.out.println(":   |    ; |  :  ' ;.   :`----'  |  | `----'  |  |  |   | :.'|:   |  ;/| \\  \\    `. |   ' '  ; :'   '  ;|   : .   / \\  \\    `.                     ");
+        System.out.println("|   :     \\|  |  ;/  \\   \\   '   :  ;     '   :  ;  '   :    ;|   :   .'  `----.   \\'   |  .'. ||   |  |;   | |`-'   `----.   \\                    ");
+        System.out.println("|   |   . |'  :  | \\  \\ ,'   |   |  '     |   |  '  |   |  ./ |   |  |-,  __ \\  \\  ||   | :  | ''   :  ;|   | ;      __ \\  \\  |                    ");
+        System.out.println("'   :  '; ||  |  '  '--'     '   :  |     '   :  |  ;   : ;   '   :  ;/| /  /`--'  /'   : |  : ;|   |  ':   ' |     /  /`--'  /                    ");
+        System.out.println("|   |  | ; |  :  :           ;   |.'      ;   |.'   |   ,/    |   |    \\'--'.     / |   | '  ,/ '   :  |:   : :    '--'.     /                     ");
+        System.out.println("|   :   /  |  | ,'           '---'        '---'     '---'     |   :   .'  `--'---'  ;   : ;--'  ;   |.' |   | :      `--'---'                      ");
+        System.out.println("|   | ,'   `--''                                              |   | ,'              |   ,/      '---'   `---'.|                                    ");
+        System.out.println("`----'                                                        `----'                '---'                 `---`                                    ");
+        System.out.println("");
+
+    }
+}
+
+
+
+
+
+class Victory{
+
+    Victory(){
+        System.out.println("");
+        System.out.println("        (                   )  (       )  ____ ");
+        System.out.println("        )\\ )  (    *   ) ( /(  )\\ ) ( /( |   / ");
+        System.out.println(" (   ( (()/(  )\\ ` )  /( )\\())(()/( )\\())|  /  ");
+        System.out.println(" )\\  )\\ /(_)|((_) ( )(_)|(_)\\  /(_)|(_)\\ | /   ");
+        System.out.println("((_)((_|_)) )\\___(_(_())  ((_)(_))__ ((_)|/    ");
+        System.out.println("\\ \\ / /|_ _((/ __|_   _| / _ \\| _ \\ \\ / (      ");
+        System.out.println(" \\ V /  | | | (__  | |  | (_) |   /\\ V /)\\     ");
+        System.out.println("  \\_/  |___| \\___| |_|   \\___/|_|_\\ |_|((_)    ");
+        System.out.println("");
     }
 }
 
@@ -241,37 +283,35 @@ class OceanMap {
         }
     }
 
-    public char[][] getOceanMap() {
+    char[][] getOceanMap() {
         return oceanMap;
     }
 
 }
 
 class OceanMapPlayer extends OceanMap{
-    char[][] oceanMapPlayer;
+    private char[][] oceanMapPlayer;
 
-    public OceanMapPlayer() {
+    OceanMapPlayer() {
         oceanMapPlayer=oceanMap;
     }
 
-    public char[][] getOceanMapPlayer() {
+    char[][] getOceanMapPlayer() {
         return oceanMapPlayer;
     }
 }
 
 class OceanMapMain extends OceanMap{
-    char[][] oceanMapMain;
+    private char[][] oceanMapMain;
 
-    public OceanMapMain(OceanMapPlayer oceanMapPLayer) {
+    OceanMapMain(OceanMapPlayer oceanMapPLayer) {
         oceanMapMain=oceanMap;
 
         for (int i=0; i<oceanMapMain.length;i++){
-            for (int j=0; j<oceanMapMain[0].length;j++){
-                oceanMapMain[i][j]=oceanMapPLayer.getOceanMapPlayer()[i][j];
-            }
+            System.arraycopy(oceanMapPLayer.getOceanMapPlayer()[i], 0, oceanMapMain[i], 0, oceanMapMain[0].length);
         }
     }
-    public char[][] getOceanMapMain() {
+    char[][] getOceanMapMain() {
         return oceanMapMain;
     }
 }
@@ -281,21 +321,23 @@ class OceanMapMain extends OceanMap{
 
 
 class SetUpPlayerShips {
-    ViewMethods viewMethods = new ViewMethods();
-    CommonMethods commonMethods = new CommonMethods();
+
 
     SetUpPlayerShips(int numberOfPlayerShips, char [][] oceanMapPlayerDeploying) {
 
-        System.out.println("Place your ships on the map using cartesian coordinate system rules. 'x' for horizontal and 'y' for vertical.");
+        ViewMethods viewMethods = new ViewMethods();
+        CommonMethods commonMethods = new CommonMethods();
+
+        System.out.println("Captain, place your ships on the map. Cartesian coordinate system rules apply, 'x' for horizontal and 'y' for vertical.");
 
         int counterOfPlayerSHipDeployment = numberOfPlayerShips;
 
         while (counterOfPlayerSHipDeployment > 0) {
 
 
-            System.out.print("Please enter 'x': \t");
+            System.out.print("Enter horizontal value (x): \t");
             int x = commonMethods.scannyOfInt();
-            System.out.print("Please enter 'y': \t");
+            System.out.print("Enter vertical value (y): \t");
             int y = commonMethods.scannyOfInt();
 
             KeeperOfCoordinatesInRange keeperOfCoordinatesInRange0 = new KeeperOfCoordinatesInRange(x, y);
@@ -307,9 +349,9 @@ class SetUpPlayerShips {
 
                 System.out.println("Sadly you are trying to place a ship in area where there already is one. Please try again.");
 
-                System.out.print("Please enter x, again: \t");
+                System.out.print("Enter horizontal value (x): \t");
                 x = commonMethods.scannyOfInt();
-                System.out.print("Please enter y, again: \t");
+                System.out.print("Enter vertical value (y): \t");
                 y = commonMethods.scannyOfInt();
 
                 KeeperOfCoordinatesInRange keeperOfCoordinatesInRange1 = new KeeperOfCoordinatesInRange(x, y);
@@ -319,9 +361,9 @@ class SetUpPlayerShips {
 
                 while (oceanMapPlayerDeploying[x][y] == '@') {
                     System.out.println("Right, yet again you are trying to place your ship on another one of your ships. Sorry, no double-deckers.");
-                    System.out.print("Yet again, please enter x: \t");
+                    System.out.print("Enter horizontal value (x): \t");
                     x = commonMethods.scannyOfInt();
-                    System.out.print("Yet again, please enter y: \t");
+                    System.out.print("Enter vertical value (y): \t");
                     y = commonMethods.scannyOfInt();
 
                     KeeperOfCoordinatesInRange keeperOfCoordinatesInRange2 = new KeeperOfCoordinatesInRange(x, y);
@@ -335,7 +377,7 @@ class SetUpPlayerShips {
 
             counterOfPlayerSHipDeployment--;
             viewMethods.viewMapAsList(oceanMapPlayerDeploying);
-            System.out.println("Number of ships we can deploy: " + counterOfPlayerSHipDeployment);
+            System.out.println("Captain, we still can deploy: " + counterOfPlayerSHipDeployment+" ships.");
         }
     }
 }
@@ -343,23 +385,23 @@ class SetUpPlayerShips {
 
 
 
-//todo keeper doesnt have the entry turned CARTESIAN
+
 class KeeperOfCoordinatesInRange {
 
-    CommonMethods commonMethods = new CommonMethods();
-
-    int x;
-    int y;
+    private int x;
+    private int y;
 
     KeeperOfCoordinatesInRange(int x, int y){
+        CommonMethods commonMethods = new CommonMethods();
+
         this.x=x;
         this.y=y;
 
         while (!coordinateInRange(x) || !coordinateInRange(y)) {
             System.out.println("It seems that your coordinates were out of range, please try again.");
-            System.out.print("Please enter'x': \t");
+            System.out.print("Enter horizontal value (x): \t");
             x = commonMethods.scannyOfInt();
-            System.out.print("Please enter 'y': \t");
+            System.out.print("Enter vertical value (y): \t");
             y = commonMethods.scannyOfInt();
 
             this.x=x;
@@ -367,15 +409,14 @@ class KeeperOfCoordinatesInRange {
         }
     }
     private boolean coordinateInRange(int coordinate){
-        if (coordinate>=0 && coordinate<=9) return true;
-        else return false;
+        return  (coordinate>=0 && coordinate<=9);
     }
 
-    public int getX() {
+    int getX() {
         return x;
     }
 
-    public int getY() {
+    int getY() {
         return y;
     }
 }
@@ -385,21 +426,17 @@ class KeeperOfCoordinatesInRange {
 
 
 class SetUpAIShips{
-    ViewMethods viewMethods = new ViewMethods();
-    CommonMethods commonMethods = new CommonMethods();
-
-    char [][] oceanMap;
 
     SetUpAIShips(int numberOfAIShips, char [][] oceanMap){
-        this.oceanMap=oceanMap;
+        CommonMethods commonMethods = new CommonMethods();
 
         List <Integer> rangeForPlacingAIShips = new ArrayList<>(Arrays.asList(markingValuesWithInt1D(oceanMap)));
 
-        List <Integer> shipsAlreadyPlacedByPlayerList = excludeFromRange('@', commonMethods.mapTo1D(oceanMap));
+        List <Integer> shipsAlreadyPlacedByPlayerList = findShipsLocation('@', commonMethods.mapTo1D(oceanMap));
 
-        for (Integer i : shipsAlreadyPlacedByPlayerList){
-            rangeForPlacingAIShips.remove(i);
-        }
+
+        rangeForPlacingAIShips.removeAll(shipsAlreadyPlacedByPlayerList);
+
 
         for (int i=0; i<numberOfAIShips; i++) {
             Integer x = generateRandomIntFromIntList(rangeForPlacingAIShips);
@@ -410,7 +447,7 @@ class SetUpAIShips{
         }
     }
 
-    public Integer [] markingValuesWithInt1D (char[][] input){
+    private Integer [] markingValuesWithInt1D (char[][] input){
 
         Integer [] output = new Integer[input.length*input[0].length];
 
@@ -419,18 +456,18 @@ class SetUpAIShips{
         }return output;
     }
 
-    public List <Integer> excludeFromRange(char valueToExclude, char [] map1D){
+    private List <Integer> findShipsLocation(char shipMarkCharacter, char [] map1D){
 
         List<Integer> output = new ArrayList<>();
 
         for (int i=0; i<map1D.length; i++){
-            if (map1D[i]==valueToExclude){
+            if (map1D[i]==shipMarkCharacter){
                 output.add(i);
             }
         }return output;
     }
 
-    public int generateRandomIntFromIntList(List <Integer> input){
+    private int generateRandomIntFromIntList(List <Integer> input){
         Random random = new Random(new Date().getTime());
 
         return input.get(random.nextInt(input.size()));
@@ -442,16 +479,16 @@ class SetUpAIShips{
 
 
 class GameItself{
-    CommonMethods commonMethods = new CommonMethods();
-    ViewMethods viewMethods = new ViewMethods();
+    private CommonMethods commonMethods = new CommonMethods();
+    private ViewMethods viewMethods = new ViewMethods();
 
-    OceanMap playerVisibleMap;
-    OceanMap mainMap;
-    int numberOfPlayerShips;
-    int numberOfAIShips;
+    private OceanMap playerVisibleMap;
+    private OceanMap mainMap;
+    private int numberOfPlayerShips;
+    private int numberOfAIShips;
 
 
-    List<Character> range;
+    private List<Character> range;
 
     GameItself(OceanMap playerVisibleMap, OceanMap mainMap, int numberOfPlayerShips, int numberOfAISHips){
         this.playerVisibleMap=playerVisibleMap;
@@ -477,31 +514,26 @@ class GameItself{
         int playerShips = numberOfPlayerShips;
         int AIShips = numberOfAIShips;
 
-        //todo dummy
-        System.out.println(range);
-
         if (playerShips==0){
-            System.out.println("AI won");
+            System.out.println("\n Sadly we have been bested by your opponents. Better luck next time!");
         }
         if (AIShips==0){
-            System.out.println("Player won");
+            new Victory();
         }else {
-            System.out.println("player turn");
+            System.out.println("Your turn.");
             playerTurn();
-            System.out.println("AI turn");
+            System.out.println("Opponents turn.");
             AITurn();
             theGame();
         }
     }
 
     private void playerTurn(){
-        //todo casrtesize
-        //todo BLOODY RANGE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-        //todo major issue here with cartesius, too tired for this :(
-        System.out.print("enter x: ");
+        //This method had been adjusted for the cartesian way!
+        System.out.println("Captain, please provide us with coordinates for our next salvo!");
+        System.out.print("Enter horizontal value (x): \t");
         int x=commonMethods.scannyOfInt();
-        System.out.print("enter y: ");
+        System.out.print("Enter vertical value (y): \t");
         int y=commonMethods.scannyOfInt();
 
         KeeperOfCoordinatesInRange keeperOfCoordinatesInRange = new KeeperOfCoordinatesInRange(x, y);
@@ -509,24 +541,24 @@ class GameItself{
         x=keeperOfCoordinatesInRange.getX();
         y=keeperOfCoordinatesInRange.getY();
 
-        if (mainMap.getOceanMap()[x][y]=='#'){
-            System.out.println("Player HIT");
-            playerVisibleMap.getOceanMap()[x][y]='!';
+        if (mainMap.getOceanMap()[y][x]=='#'){
+            System.out.println("Captain, we have SUNK one of opponents ships!");
+            playerVisibleMap.getOceanMap()[y][x]='!';
             viewMethods.viewMapAsList(playerVisibleMap);
             numberOfAIShips--;
-            System.out.println("ai ships left "+numberOfAIShips);
+            System.out.println("Our opponents have "+numberOfAIShips+" ships remaining.");
         }
-        if (mainMap.getOceanMap()[x][y]==' '){
-            System.out.println("Player miss");
-            playerVisibleMap.getOceanMap()[x][y]='-';
+        if (mainMap.getOceanMap()[y][x]==' '){
+            System.out.println("Captain, we have missed our target.");
+            playerVisibleMap.getOceanMap()[y][x]='-';
             viewMethods.viewMapAsList(playerVisibleMap);
         }
-        if (mainMap.getOceanMap()[x][y]=='@'){
-            System.out.println("Players own hit");
-            playerVisibleMap.getOceanMap()[x][y]='x';
+        if (mainMap.getOceanMap()[y][x]=='@'){
+            System.out.println("Captain, we have sunk OUR OWN ship!");
+            playerVisibleMap.getOceanMap()[y][x]='x';
             viewMethods.viewMapAsList(playerVisibleMap);
             numberOfPlayerShips--;
-            System.out.println("player ships left "+numberOfPlayerShips);
+            System.out.println("Captain, we have only "+numberOfPlayerShips+" ships remaining.");
         }
     }
 
@@ -540,27 +572,28 @@ class GameItself{
         int x = xy/10;
         int y = xy%10;
 
-        System.out.println(x+" y  x"+y);  //todo cartesized DONE
+        System.out.println("Captain, our opponents shot at horizontal (x): "+y+", and vertical (y): "+x+".");
 
         if (mainMap.getOceanMap()[x][y]=='@'){
-            System.out.println("AI HIT");
+            System.out.println("Captain, our opponents have sunk one of our ships.");
             playerVisibleMap.getOceanMap()[x][y]='x';
             viewMethods.viewMapAsList(playerVisibleMap);
             numberOfPlayerShips--;
-            System.out.println("player ships left "+numberOfPlayerShips);
+            System.out.println("Captain, we have only "+numberOfPlayerShips+" ships remaining.");
             range.remove(xy);
         }
         if (mainMap.getOceanMap()[x][y]==' '){
-            System.out.println("AI MISS at x:"+y+"y:"+x);  //todo cartesized
+            System.out.println("Captain, our opponents have missed!");
             viewMethods.viewMapAsList(playerVisibleMap);
             range.remove(xy);
         }
+        //Documentation clearly states that AI should be able to shoot own ships, hence it's possible.
         if (mainMap.getOceanMap()[x][y]=='#'){
-            System.out.println("AI SELF HIT!");
+            System.out.println("Captain, our opponents have sunk one of their own ships...");
             playerVisibleMap.getOceanMap()[x][y]='!';
             viewMethods.viewMapAsList(playerVisibleMap);
             numberOfAIShips--;
-            System.out.println("AI ships left "+numberOfAIShips);
+            System.out.println("Our opponents have "+numberOfAIShips+" ships remaining.");
             range.remove(xy);
         }
     }
@@ -572,6 +605,6 @@ class GameItself{
 
 public class Battleships {
     public static void main(String[] args) {
-        Main main = new Main(5, 5);
+        new Main(5, 5);
     }
 }
