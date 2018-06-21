@@ -15,16 +15,15 @@ import java.util.regex.Pattern;
 
 public class FractionCalculator {
 
-    public FractionCalculator() {
+    FractionCalculator() {
 
         calculatorMain();
 
     }
 
-    public FractionCalculator(boolean advancced){
+    FractionCalculator(boolean advancced){
 
     }
-
 
     private String getOperation(){
         Scanner scanny = new Scanner(System.in);
@@ -48,7 +47,7 @@ public class FractionCalculator {
      * @param string String input to be classified.
      * @return An int value. 3 for fraction, 2 for scalar, 1 for zero. 0 return left as failsafe.
      * */
-    private int validFraction(String string){
+    int validFraction(String string){
         List<Pattern> listOfFractions = new ArrayList<>();
         listOfFractions.add(Pattern.compile("\\d+/[1-9]\\d*$")); //positive fraction
         listOfFractions.add(Pattern.compile("-\\d+/[1-9]\\d*$")); //negative fraction
@@ -73,7 +72,7 @@ public class FractionCalculator {
         return 0;
     }
 
-    private Fraction getFraction(){
+    Fraction getFraction(){
         Scanner scanny = new Scanner(System.in);
         int max = Integer.MAX_VALUE/2;
 
@@ -100,6 +99,7 @@ public class FractionCalculator {
                     String emergencyInputDeno = scanny.next();
                     denominatorIn = new BigInteger(emergencyInputDeno);
                 }catch (NumberFormatException e){
+                    //intentionally empty
                 }
             }
 
@@ -135,13 +135,13 @@ public class FractionCalculator {
         return new Fraction();
     }
 
-    private String acquireNumerator(String in){
+    String acquireNumerator(String in){
         if (in.charAt(0)=='/') return "";
 
         return (in.charAt(0))+ acquireNumerator(in.substring(1));
     }
 
-    private String acquireDenominator(String in){
+    String acquireDenominator(String in){
         if (in.length()==0) return "";
 
         if (in.charAt(0)=='/') return in.substring(1);
@@ -221,7 +221,7 @@ public class FractionCalculator {
             fraction1.toLowestTerms();
             fraction2.toLowestTerms();
 
-            System.out.println("\nIn order to find out if fractions are even we need to get them to lowest terms. This way they become comparable.");
+            System.out.println("\nIn order to find out if fractions the are even we need to get them to lowest terms. This way they become comparable.");
 
             boolean equals =(fraction1.equals(fraction2));
 
@@ -245,7 +245,7 @@ public class FractionCalculator {
     }
 
     public static void main(String[] args) {
-        FractionCalculator fractionCalculator = new FractionCalculator();
+        new FractionCalculator();
 
     }
 }
