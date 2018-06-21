@@ -1,6 +1,9 @@
 package MS_OOP.FracCalc;
 
-import java.util.*;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -13,9 +16,15 @@ import java.util.regex.Pattern;
 public class FractionCalculator {
 
     public FractionCalculator() {
+
         calculatorMain();
 
     }
+
+    public FractionCalculator(boolean advancced){
+
+    }
+
 
     private String getOperation(){
         Scanner scanny = new Scanner(System.in);
@@ -34,8 +43,11 @@ public class FractionCalculator {
         return out;
     }
 
-    //This method is a logical syntax text, returning int value depending on what kind of input has been provided.
-    //Output of this method is used to choose proper constructor in the Fraction class.
+    /**This method is a syntax qualifier, returning int value depending on what kind of input has been provided.
+     * It is used to direct output to proper constructor.
+     * @param string String input to be classified.
+     * @return An int value. 3 for fraction, 2 for scalar, 1 for zero. 0 return left as failsafe.
+     * */
     private int validFraction(String string){
         List<Pattern> listOfFractions = new ArrayList<>();
         listOfFractions.add(Pattern.compile("\\d+/[1-9]\\d*$")); //positive fraction
@@ -63,20 +75,54 @@ public class FractionCalculator {
 
     private Fraction getFraction(){
         Scanner scanny = new Scanner(System.in);
+        int max = Integer.MAX_VALUE/2;
+
 
         System.out.print("Please enter a fraction (a/b) or an integer (a): ");
         String in = scanny.next();
 
         if (validFraction(in)==3){
-            int numerator = Integer.parseInt(acquireNumerator(in));
-            int denominator = Integer.parseInt(acquireDenominator(in));
+            BigInteger numeratorIn = new BigInteger(acquireNumerator(in));
+            BigInteger denominatorIn = new BigInteger(acquireDenominator(in));
+
+            while (numeratorIn.compareTo(BigInteger.valueOf(max))==1){
+                try {
+                    System.out.println("Sorry, integers only, this means the → numerator ← entered has to be lower than: "+((Integer.MAX_VALUE/2)-1)+".\nNumerator only, please: ");
+                    String emergencyInputNume = scanny.next();
+                    numeratorIn=new BigInteger(emergencyInputNume);
+                }catch (NumberFormatException e){
+                }
+            }
+
+            while (denominatorIn.compareTo(BigInteger.valueOf(max))==1){
+                try {
+                    System.out.println("Sorry, integers only, this means the → denominator ← entered has to be lower than: " + ((Integer.MAX_VALUE / 2) - 1) + ".\nDenominator only, please: ");
+                    String emergencyInputDeno = scanny.next();
+                    denominatorIn = new BigInteger(emergencyInputDeno);
+                }catch (NumberFormatException e){
+                }
+            }
+
+            int numerator = Integer.parseInt(String.valueOf(numeratorIn));
+            int denominator = Integer.parseInt(String.valueOf(denominatorIn));
 
             return new Fraction(numerator, denominator);
 
-        } if (validFraction(in)==2){
-            int value = Integer.parseInt(in);
+        } if (validFraction(in)==2) {
+            BigInteger value = new BigInteger(in);
 
-            return new Fraction(value);
+            while (value.compareTo(BigInteger.valueOf(max)) == 1) {
+                try {
+                    System.out.println("Again, integers only, this means the number entered has to enter has to be lower than: " + ((Integer.MAX_VALUE / 2) - 1) + ".");
+                    String emergencyInput = scanny.next();
+                    value = new BigInteger(emergencyInput);
+                }catch (NumberFormatException e){
+                }
+            }
+
+            int output = Integer.parseInt(String.valueOf(value));
+
+            return new Fraction(output);
 
         } if (validFraction(in)==1){
 
@@ -109,43 +155,63 @@ public class FractionCalculator {
             Fraction fraction1 = getFraction();
             Fraction fraction2 = getFraction();
 
-            System.out.println(fraction1+" + "+fraction2+" = "+fraction1.add(fraction2));
+            Fraction sum = fraction1.add(fraction2);
+            Fraction suminLowest = new Fraction(sum.getNumerator(), sum.getDenominator());
+            suminLowest.toLowestTerms();
+
+            System.out.println(fraction1+" + "+fraction2+" = "+sum+" In lowest terms it is: "+suminLowest);
             calculatorMain();
         }
         if (operation.equals("-")){
             Fraction fraction1 = getFraction();
             Fraction fraction2 = getFraction();
 
-            System.out.println(fraction1+" - "+fraction2+" = "+fraction1.subtract(fraction2));
+            Fraction difference = fraction1.subtract(fraction2);
+            Fraction differenceInLowest = new Fraction(difference.getNumerator(), difference.getDenominator());
+            differenceInLowest.toLowestTerms();
+
+            System.out.println(fraction1+" - "+fraction2+" = "+difference+" In lowest terms it is: "+differenceInLowest);
             calculatorMain();
         }
         if (operation.equals("*")){
             Fraction fraction1 = getFraction();
             Fraction fraction2 = getFraction();
 
-            System.out.println(fraction1+" * "+fraction2+" = "+fraction1.multiply(fraction2));
+            Fraction product = fraction1.multiply(fraction2);
+            Fraction productInLowest = new Fraction(product.getNumerator(), product.getDenominator());
+            productInLowest.toLowestTerms();
+
+            System.out.println(fraction1+" * "+fraction2+" = "+product+" In lowest terms it is: "+productInLowest);
             calculatorMain();
         }
         if (operation.equals("/")){
             Fraction fraction1 = getFraction();
             Fraction fraction2 = getFraction();
 
+            Fraction quotient = new Fraction(1,1);
+
             if (fraction2.getNumerator()!=0) {
-                System.out.println(fraction1 + " / " + fraction2 + " = " + fraction1.divide(fraction2));
+                quotient=fraction1.divide(fraction2);
             }
 
             while (fraction2.getNumerator()==0) {
                 try {
-                    System.out.println(fraction1 + " / " + fraction2 + " = " + fraction1.divide(fraction2));
+                    quotient=fraction1.divide(fraction2);
                 } catch (IllegalArgumentException e) {
                     System.out.println("\n" + e.getMessage());
                     System.out.println("You will have to enter 2nd fraction again. This time no zero-gunslinging, please.");
                     fraction2 = getFraction();
                     if (fraction2.getNumerator()!=0){
-                        System.out.println(fraction1 + " / " + fraction2 + " = " + fraction1.divide(fraction2));
+                        quotient=fraction1.divide(fraction2);
                     }
                 }
             }
+
+            Fraction quotientInLowest = new Fraction(quotient.getNumerator(), quotient.getDenominator());
+            quotientInLowest.toLowestTerms();
+
+            System.out.println(fraction1+" / "+fraction2+" = "+quotient+" In lowest terms it is: "+quotientInLowest);
+
             calculatorMain();
         }
         if (operation.equals("=")){
@@ -171,7 +237,7 @@ public class FractionCalculator {
         }
         if (operation.equals("Q")||operation.equals("q")){
             System.out.println("\nHope you enjoyed! Byebye! <^_^>");
-            System.exit(0);
+            System.exit(69);
         }
         else {
             System.out.println("Something went horribly wrong. You are not supposed to be here. getOperation error.");

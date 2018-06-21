@@ -10,7 +10,8 @@ import java.util.Map;
  * @project EDX,
  *
  * BE AWARE:
- * Aim of this exercise, that I have set for myself, is to emulate how a human would solve this, NOT to find the most effective algorithm.
+ * Prime factorization method here is used intentionally, even if it is not optimal algorithm for this problem.
+ * Who knows I might make it into an educational app.
  * Cheers!
  */
 public class Fraction {
@@ -53,8 +54,11 @@ public class Fraction {
         PrimeFactorizer(int x) {
             this.x = x;
 
-            recursionToPrime(x, i);
-
+            try {
+                recursionToPrime(x, i);
+            }catch (StackOverflowError e){
+                System.out.println("OMFG");
+            }
             for (Integer i : primes){
                 primesInPowers.putIfAbsent(i, 0);
                 primesInPowers.computeIfPresent(i, (k,v) -> v+1);
@@ -186,6 +190,8 @@ public class Fraction {
 
     @Override
     public String toString() {
+        if (denominator==1) return String.valueOf(numerator);
+
         return numerator+"/"+denominator;
     }
 
