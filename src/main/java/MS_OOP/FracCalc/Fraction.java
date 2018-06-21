@@ -54,11 +54,8 @@ public class Fraction {
         PrimeFactorizer(int x) {
             this.x = x;
 
-            try {
-                recursionToPrime(x, i);
-            }catch (StackOverflowError e){
-                System.out.println("OMFG");
-            }
+            recursionToPrime(x, i);
+
             for (Integer i : primes){
                 primesInPowers.putIfAbsent(i, 0);
                 primesInPowers.computeIfPresent(i, (k,v) -> v+1);
